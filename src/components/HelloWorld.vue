@@ -1,58 +1,317 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div class="container-fluid px-1 px-sm-3 py-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+      <div class="row card0" v-if="clickMethod">
+        <div class="card1 col-lg-8 col-md-7">
+          <div class="text-center">
+            <img
+              class="image mt-5"
+              :src="`http://openweathermap.org/img/wn/${imageWeather}@2x.png`"
+              width="50%"
+            />
+          </div>
+          <div class="row px-3 mt-3 mb-3">
+            <h1 class="large-font mr-3">{{ currentWeather }}</h1>
+            <div class="d-flex flex-column mr-3">
+              <h2 class="mt-3 mb-0">{{ countryName }}</h2>
+              <small>
+                {{ timeNow() }} - {{ arrayOfWeekdays[new Date().getDay()] }},
+                {{ getDate() }}</small
+              >
+            </div>
+            <div class="d-flex flex-column text-center">
+              <h3 class="fa fa-sun-o mt-4"></h3>
+              <p class="display-5">{{ description }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="card2 col-lg-4 col-md-5">
+          <div class="row px-3">
+            <input
+              type="text"
+              name="location"
+              placeholder="Another location"
+              class="mb-5"
+              v-model="searchCountry"
+              @keyup.enter="getWeather()"
+            />
+          </div>
+          <div class="mr-5">
+            <p>Weather Details</p>
+            <div class="d-flex px-3">
+              <p class="light-text mr-2">Feels Like</p>
+              <p style="margin-left: 20px;">{{ feelsLike }}</p>
+            </div>
+            <div class="d-flex px-3">
+              <p class="light-text">Humidity</p>
+              <p style="margin-left: 20px;">{{ humidity }}</p>
+            </div>
+            <div class="d-flex px-3">
+              <p class="light-text">Sunrise</p>
+              <p style="margin-left: 20px;">{{ sunrise }}</p>
+            </div>
+            <div class="d-flex px-3">
+              <p class="light-text">Sunset</p>
+              <p style="margin-left: 20px;">{{ sunset }}</p>
+            </div>
+            <div class="d-flex px-3">
+              <p class="light-text">Temperature max</p>
+              <p style="margin-left: 20px;">{{ tmax }}</p>
+            </div>
+            <div class="d-flex px-3">
+              <p class="light-text">Temperature min</p>
+              <p style="margin-left: 20px;">{{ tmin }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row card0" v-else>
+        <div class="card1 col-lg-8 col-md-7">
+          <div class="d-flex flex-column text-center">
+            <h3 class="fa fa-sun-o mt-4"></h3>
+            <p class="display-5">Please search for a city </p>
+          </div>
+        </div>
+        <div class="card2 col-lg-4 col-md-5">
+          <div class="row px-3">
+            <input
+              type="text"
+              name="location"
+              placeholder="Another location"
+              class="mb-5"
+              v-model="searchCountry"
+              @keyup.enter="getWeather()"
+            />
+          </div>
+          <div class="mr-5">
+            <p>Weather Details</p>
+            <div class="d-flex px-3">
+              <p class="light-text mr-2">Feels Like</p>
+              <p style="margin-left: 20px;">{{ feelsLike }}</p>
+            </div>
+            <div class="d-flex px-3">
+              <p class="light-text">Humidity</p>
+              <p style="margin-left: 20px;">{{ humidity }}</p>
+            </div>
+            <div class="d-flex px-3">
+              <p class="light-text">Sunrise</p>
+              <p style="margin-left: 20px;">{{ sunrise }}</p>
+            </div>
+            <div class="d-flex px-3">
+              <p class="light-text">Sunset</p>
+              <p style="margin-left: 20px;">{{ sunset }}</p>
+            </div>
+            <div class="d-flex px-3">
+              <p class="light-text">Temperature max</p>
+              <p style="margin-left: 20px;">{{ tmax }}</p>
+            </div>
+            <div class="d-flex px-3">
+              <p class="light-text">Temperature min</p>
+              <p style="margin-left: 20px;">{{ tmin }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+// import axios from 'axios';
 export default {
   name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
+  data() {
+    return {
+      currentWeather: null,
+      countryName: null,
+      tmax: null,
+      tmin: null,
+      sunrise: null,
+      sunset: null,
+      feelsLike: null,
+      humidity: null,
+      weatherStatus: null,
+      searchCountry: '',
+      lat: null,
+      long: null,
+      description: null,
+      clickMethod: false,
+      arrayOfWeekdays: [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+      ],
+      arrayOfMonths: [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ],
+    };
+  },
+  created() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.long = position.coords.longitude;
+        this.lat = position.coords.latitude;
+        console.log(this.long);
+      });
+    }
+  },
+  methods: {
+    async getWeather() {
+      const api = `https://api.openweathermap.org/data/2.5/weather?q=${this.searchCountry}&appid=52293b43835f810dfe6fc255311d9794`;
+
+      const response = await fetch(api);
+      if (!response.ok) {
+        console.log('etwas schiefgelaufen');
+      }
+
+      const json = await response.json();
+      console.log(json);
+      const temperature = Math.ceil(json.main.temp - 273.15) + '°';
+      // let regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+      this.countryName = json.name;
+      this.currentWeather = temperature;
+      this.description = json.weather[0].main;
+      this.imageWeather = json.weather[0].icon;
+      this.feelsLike = Math.ceil(json.main.feels_like - 273.15) + '°';
+      this.tmax = Math.ceil(json.main.temp_max - 273.15) + '°';
+      this.tmin = Math.ceil(json.main.temp_min - 273.15) + '°';
+      this.sunrise = this.convertInTime(new Date(json.sys.sunrise * 1000));
+      this.sunset = this.convertInTime(new Date(json.sys.sunset * 1000));
+      this.humidity = json.main.humidity + '%';
+      this.clickMethod = true;
+      console.log(this.description);
+    },
+    timeNow() {
+      var d = new Date();
+      let hours = d.getHours();
+      let minutes = d.getMinutes();
+      if (minutes < 10 && hours < 10)
+        return `0${d.getHours()}:0${d.getMinutes()}`;
+      if (hours < 10) return `0${d.getHours()}:${d.getMinutes()}`;
+      if (minutes < 10) return `${d.getHours()}:0${d.getMinutes()}`;
+      return `${d.getHours()}:${d.getMinutes()}`;
+    },
+    getDate() {
+      var dateObj = new Date();
+      var month = dateObj.getMonth() + 1; //months from 1-12.
+      var day = dateObj.getDate();
+      var year = dateObj.getFullYear();
+      return `${day} ${this.arrayOfMonths[month - 1]} '${year}`;
+    },
+    convertInTime(d) {
+      let hours = d.getHours();
+      let minutes = d.getMinutes();
+      if (minutes < 10 && hours < 10)
+        return `0${d.getHours()}:0${d.getMinutes()}`;
+      if (hours < 10) return `0${d.getHours()}:${d.getMinutes()}`;
+      if (minutes < 10) return `${d.getHours()}:0${d.getMinutes()}`;
+      return `${d.getHours()}:${d.getMinutes()}`;
+    },
+  },
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+<style>
+body {
+  color: #fff;
+  overflow-x: hidden;
+  height: 100%;
+  background-image: linear-gradient(#000000, #000000);
+  background-repeat: no-repeat;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+.card0 {
+  width: 94%;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+
+.card1 {
+  padding: 30px 20px 30px 50px;
 }
-a {
-  color: #42b983;
+
+.image {
+  width: 100px;
+  height: 100px;
+}
+
+.large-font {
+  font-size: 70px;
+  font-family: Arial;
+}
+
+.fa-sun-o {
+  font-size: 22px;
+}
+
+.card2 {
+  background-color: #607d8b;
+  padding: 0px 0px 40px 40px;
+}
+
+input {
+  background-color: #607d8b;
+  padding: 24px 0px 12px 0px !important;
+  width: 80%;
+  box-sizing: border-box;
+  border: none !important;
+  border-bottom: 1px solid #cfd8dc !important;
+  font-size: 16px !important;
+  color: #fff !important;
+}
+
+input:focus {
+  -moz-box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid #fff !important;
+  outline-width: 0;
+  font-weight: 400;
+}
+
+::placeholder {
+  color: #b0bec5 !important;
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: #b0bec5 !important;
+}
+
+::-ms-input-placeholder {
+  color: #b0bec5 !important;
+}
+
+.light-text {
+  color: #b0bec5;
+}
+
+.suggestion:hover {
+  color: #fff;
+  cursor: pointer;
+}
+
+.line {
+  height: 1px;
+  background-color: #b0bec5;
+}
+
+@media screen and (max-width: 500px) {
+  .card1 {
+    padding-left: 26px;
+  }
 }
 </style>
