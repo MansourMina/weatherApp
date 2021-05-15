@@ -4,11 +4,7 @@
       <div class="row card0" v-if="clickMethod">
         <div class="card1 col-lg-8 col-md-7">
           <div class="text-center">
-            <img
-              class="image mt-5"
-              :src="`http://openweathermap.org/img/wn/${imageWeather}@2x.png`"
-              width="50%"
-            />
+            <img class="image mt-5" :src="imageWeather" width="50%" />
           </div>
           <div class="row px-3 mt-3 mb-3">
             <h1 class="large-font mr-3">{{ currentWeather }}</h1>
@@ -69,7 +65,7 @@
         <div class="card1 col-lg-8 col-md-7">
           <div class="d-flex flex-column text-center">
             <h3 class="fa fa-sun-o mt-4"></h3>
-            <p class="display-5">Please search for a city </p>
+            <p class="display-5">Please search for a city</p>
           </div>
         </div>
         <div class="card2 col-lg-4 col-md-5">
@@ -124,6 +120,7 @@ export default {
     return {
       currentWeather: null,
       countryName: null,
+      imageWeather: null,
       tmax: null,
       tmin: null,
       sunrise: null,
@@ -186,13 +183,14 @@ export default {
       this.countryName = json.name;
       this.currentWeather = temperature;
       this.description = json.weather[0].main;
-      this.imageWeather = json.weather[0].icon;
+      let weatherIcon = json.weather[0].icon;
       this.feelsLike = Math.ceil(json.main.feels_like - 273.15) + '°';
       this.tmax = Math.ceil(json.main.temp_max - 273.15) + '°';
       this.tmin = Math.ceil(json.main.temp_min - 273.15) + '°';
       this.sunrise = this.convertInTime(new Date(json.sys.sunrise * 1000));
       this.sunset = this.convertInTime(new Date(json.sys.sunset * 1000));
       this.humidity = json.main.humidity + '%';
+      this.imageWeather = `http://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
       this.clickMethod = true;
       console.log(this.description);
     },
