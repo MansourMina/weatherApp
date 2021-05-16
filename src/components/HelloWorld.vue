@@ -165,7 +165,7 @@ export default {
       navigator.geolocation.getCurrentPosition((position) => {
         this.long = position.coords.longitude;
         this.lat = position.coords.latitude;
-        this.apiCall('current')
+        this.apiCall('current');
       });
     }
   },
@@ -231,7 +231,7 @@ export default {
       let splitDateTime = this.timeofCity.split(',');
       let timeofSplit = splitDateTime[1];
       let splitHourMinute = timeofSplit.split(':')[0];
-      if (splitHourMinute <= 6)
+      if (splitHourMinute <= 6 || splitHourMinute >= 20)
         document.body.style.background = 'rgb(4, 12, 54)';
       else document.body.style.background = 'rgb(78, 99, 206)';
     },
@@ -302,7 +302,6 @@ body {
   color: #fff;
   overflow-x: hidden;
   height: 100%;
-  background-color: rgb(255, 255, 255);
   background-repeat: no-repeat;
 }
 
