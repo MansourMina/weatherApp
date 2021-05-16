@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid px-1 px-sm-3 py-5 mx-auto">
+  <div class="container-fluid px-1 px-sm-3 py-5 mt-4 mx-auto">
     <div class=" row d-flex justify-content-center">
       <div class="row card0" v-if="clickMethod">
         <div class="card1 col-lg-8 col-md-7">
@@ -26,7 +26,7 @@
               placeholder="Another location"
               class="mb-5"
               v-model="searchCountry"
-              @keyup.enter="getWeather()"
+              @keyup.enter="apiCall('notCurrent')"
             />
           </div>
           <div class="mr-5">
@@ -73,10 +73,10 @@
               placeholder="Another location"
               class="mb-5"
               v-model="searchCountry"
-              @keyup.enter="getWeather()"
+              @keyup.enter="apiCall('notCurrent')"
             />
           </div>
-          <div class="mr-5">
+          <div class="details mr-5">
             <p>Weather Details</p>
             <div class="d-flex px-3">
               <p class="light-text mr-2">Feels Like</p>
@@ -130,7 +130,7 @@ export default {
       searchCountry: '',
       lat: null,
       long: null,
-      message: 'Please search for a city',
+      message: '',
       description: null,
       timeofCity: null,
       clickMethod: false,
@@ -157,6 +157,7 @@ export default {
         'November',
         'December',
       ],
+      imagesOfTime: [],
     };
   },
   created() {
@@ -164,57 +165,75 @@ export default {
       navigator.geolocation.getCurrentPosition((position) => {
         this.long = position.coords.longitude;
         this.lat = position.coords.latitude;
-        // console.log(this.long);
+        this.apiCall('current')
       });
     }
-   
   },
 
   methods: {
-    async getWeather() {
-      const api = `https://api.openweathermap.org/data/2.5/weather?q=${this.searchCountry}&appid=${this.openweatherKey}`;
-
-      const response = await fetch(api);
-      if (!response.ok) {
-        this.clickMethod = false;
-        this.message = 'City not found';
-      } else {
-        const json = await response.json();
-        // console.log(json);
-        const temperature = Math.ceil(json.main.temp - 273.15) + '°';
-        let dateTime = new Intl.DateTimeFormat(
-          [],
-          this.getTime(
-            await this.getTimeZone(json.coord.lon, json.coord.lat),
-            'dateTime',
-          ),
-        );
-        let sunriseSunset = new Intl.DateTimeFormat(
-          [],
-          this.getTime(
-            await this.getTimeZone(json.coord.lon, json.coord.lat),
-            'sunriseSunset',
-          ),
-        );
-        // let regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
-        this.countryName = json.name;
-        this.currentWeather = temperature;
-        this.description = json.weather[0].main;
-        let weatherIcon = json.weather[0].icon;
-        this.feelsLike = Math.ceil(json.main.feels_like - 273.15) + '°';
-        this.tmax = Math.ceil(json.main.temp_max - 273.15) + '°';
-        this.tmin = Math.ceil(json.main.temp_min - 273.15) + '°';
-        this.sunrise = sunriseSunset.format(new Date(json.sys.sunrise * 1000));
-        this.sunset = sunriseSunset.format(new Date(json.sys.sunset * 1000));
-        this.humidity = json.main.humidity + '%';
-        this.imageWeather = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
-        this.clickMethod = true;
-
-        this.timeofCity = dateTime.format(new Date());
-        // console.log(this.convertInTime(timeofCity));
-
-        // console.log(this.description);
+    async apiCall(status) {
+      if (status == 'current') {
+        const api = `https://api.openweathermap.org/data/2.5/weather?lat=${this.lat}&lon=${this.long}&appid=${this.openweatherKey}`;
+        const response = await fetch(api);
+        if (!response.ok) {
+          this.clickMethod = false;
+          this.message = 'City not found';
+        } else {
+          const json = await response.json();
+          await this.getWeather(json);
+        }
       }
+      if (status == 'notCurrent') {
+        const api = `https://api.openweathermap.org/data/2.5/weather?q=${this.searchCountry}&appid=${this.openweatherKey}`;
+
+        const response = await fetch(api);
+        if (!response.ok) {
+          this.clickMethod = false;
+          this.message = 'City not found';
+        } else {
+          const json = await response.json();
+          await this.getWeather(json);
+        }
+      }
+    },
+    async getWeather(json) {
+      const temperature = Math.ceil(json.main.temp - 273.15) + '°';
+      let dateTime = new Intl.DateTimeFormat(
+        [],
+        this.getTime(
+          await this.getTimeZone(json.coord.lon, json.coord.lat),
+          'dateTime',
+        ),
+      );
+      let sunriseSunset = new Intl.DateTimeFormat(
+        [],
+        this.getTime(
+          await this.getTimeZone(json.coord.lon, json.coord.lat),
+          'sunriseSunset',
+        ),
+      );
+      // let regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+      this.countryName = json.name;
+      this.currentWeather = temperature;
+      this.description = json.weather[0].main;
+      let weatherIcon = json.weather[0].icon;
+      this.feelsLike = Math.ceil(json.main.feels_like - 273.15) + '°';
+      this.tmax = Math.ceil(json.main.temp_max - 273.15) + '°';
+      this.tmin = Math.ceil(json.main.temp_min - 273.15) + '°';
+      this.sunrise = sunriseSunset.format(new Date(json.sys.sunrise * 1000));
+      this.sunset = sunriseSunset.format(new Date(json.sys.sunset * 1000));
+      this.humidity = json.main.humidity + '%';
+      this.imageWeather = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
+      this.clickMethod = true;
+
+      this.timeofCity = dateTime.format(new Date());
+
+      let splitDateTime = this.timeofCity.split(',');
+      let timeofSplit = splitDateTime[1];
+      let splitHourMinute = timeofSplit.split(':')[0];
+      if (splitHourMinute <= 6)
+        document.body.style.background = 'rgb(4, 12, 54)';
+      else document.body.style.background = 'rgb(78, 99, 206)';
     },
     // timeNow() {
     //   var d = new Date();
@@ -262,6 +281,7 @@ export default {
           hour: 'numeric',
           minute: 'numeric',
         };
+
         return options;
       }
       if (type == 'sunriseSunset') {
@@ -282,7 +302,7 @@ body {
   color: #fff;
   overflow-x: hidden;
   height: 100%;
-  background-image: linear-gradient(#000000, #000000);
+  background-color: rgb(255, 255, 255);
   background-repeat: no-repeat;
 }
 
