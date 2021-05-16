@@ -55,8 +55,11 @@
               <p class="light-text">Temperature min</p>
               <p style="margin-left: 20px;">{{ tmin }}</p>
             </div>
-            <button class="btn btn-outline-default mt-4 text-white " @click="apiCall('current')">
-              My Position
+            <button
+              class="btn btn-outline-default mt-4 text-white "
+              @click="apiCall('current')"
+            >
+              &rarr; My Position
             </button>
           </div>
         </div>
@@ -106,8 +109,11 @@
               <p style="margin-left: 20px;">{{ tmin }}</p>
             </div>
           </div>
-          <button class="btn btn-outline-default mt-4 text-white " @click="apiCall('current')">
-            My Position
+          <button
+            class="btn btn-outline-default mt-4 text-white "
+            @click="apiCall('current')"
+          >
+            &rarr; My Position
           </button>
         </div>
       </div>
