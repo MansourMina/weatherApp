@@ -167,6 +167,8 @@ export default {
         // console.log(this.long);
       });
     }
+    console.log(this.openweatherKey);
+    console.log(this.timeZoneKey);
   },
 
   methods: {
@@ -206,7 +208,7 @@ export default {
         this.sunrise = sunriseSunset.format(new Date(json.sys.sunrise * 1000));
         this.sunset = sunriseSunset.format(new Date(json.sys.sunset * 1000));
         this.humidity = json.main.humidity + '%';
-        this.imageWeather = `http://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
+        this.imageWeather = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
         this.clickMethod = true;
 
         this.timeofCity = dateTime.format(new Date());
