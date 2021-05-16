@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid px-1 px-sm-3 py-5 mx-auto">
-    <div class="row d-flex justify-content-center">
+    <div class=" row d-flex justify-content-center">
       <div class="row card0" v-if="clickMethod">
         <div class="card1 col-lg-8 col-md-7">
           <div class="text-center">
