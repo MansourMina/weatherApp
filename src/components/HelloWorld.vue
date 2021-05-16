@@ -244,7 +244,7 @@ export default {
       return `${d.getHours()}:${d.getMinutes()}`;
     },
     async getTimeZone(long, lat) {
-      const api = `http://api.timezonedb.com/v2.1/get-time-zone?key=${this.timeZoneKey}&format=json&by=position&lat=${lat}&lng=${long}`;
+      const api = `https://api.timezonedb.com/v2.1/get-time-zone?key=${this.timeZoneKey}&format=json&by=position&lat=${lat}&lng=${long}`;
 
       const response = await fetch(api);
       if (!response.ok) {
