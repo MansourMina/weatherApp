@@ -55,6 +55,9 @@
               <p class="light-text">Temperature min</p>
               <p style="margin-left: 20px;">{{ tmin }}</p>
             </div>
+            <button class="btn btn-outline-default mt-4 text-white " @click="apiCall('current')">
+              My Position
+            </button>
           </div>
         </div>
       </div>
@@ -76,7 +79,7 @@
               @keyup.enter="apiCall('notCurrent')"
             />
           </div>
-          <div class="details mr-5">
+          <div class="mr-5">
             <p>Weather Details</p>
             <div class="d-flex px-3">
               <p class="light-text mr-2">Feels Like</p>
@@ -103,6 +106,9 @@
               <p style="margin-left: 20px;">{{ tmin }}</p>
             </div>
           </div>
+          <button class="btn btn-outline-default mt-4 text-white " @click="apiCall('current')">
+            My Position
+          </button>
         </div>
       </div>
     </div>
