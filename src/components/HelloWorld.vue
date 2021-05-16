@@ -167,8 +167,7 @@ export default {
         // console.log(this.long);
       });
     }
-    console.log(this.openweatherKey);
-    console.log(this.timeZoneKey);
+   
   },
 
   methods: {
