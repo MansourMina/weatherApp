@@ -191,14 +191,14 @@ export default {
   methods: {
     async apiCall(status) {
       if (status == 'current') {
-        const api = `https://api.openweathermap.org/data/2.5/weather?lat=${this.lat}&lon=${this.long}&appid=${this.openweatherKey}`;
         this.waiting = true;
+        const api = `https://api.openweathermap.org/data/2.5/weather?lat=${this.lat}&lon=${this.long}&appid=${this.openweatherKey}`;
 
         const response = await fetch(api);
 
         if (!response.ok) {
           this.clickMethod = false;
-          this.message = 'City not found';
+          this.message = 'Can not read Position';
         } else {
           const json = await response.json();
           await this.getWeather(json);
@@ -206,13 +206,15 @@ export default {
         }
       }
       if (status == 'notCurrent') {
-        const api = `https://api.openweathermap.org/data/2.5/weather?q=${this.searchCountry}&appid=${this.openweatherKey}`;
         this.waiting = true;
+
+        const api = `https://api.openweathermap.org/data/2.5/weather?q=${this.searchCountry}&appid=${this.openweatherKey}`;
 
         const response = await fetch(api);
 
         if (!response.ok) {
           this.clickMethod = false;
+          this.waiting = false;
           this.message = 'City not found';
         } else {
           const json = await response.json();
@@ -260,6 +262,7 @@ export default {
         document.body.style.background = 'rgb(4, 12, 54)';
       else document.body.style.background = 'rgb(78, 99, 206)';
     },
+    
     // timeNow() {
     //   var d = new Date();
     //   let hours = d.getHours();
