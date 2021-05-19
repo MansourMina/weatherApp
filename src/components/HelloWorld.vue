@@ -214,8 +214,9 @@ export default {
 
         if (!response.ok) {
           this.clickMethod = false;
-          this.waiting = false;
           this.message = 'City not found';
+          this.waiting = false;
+
         } else {
           const json = await response.json();
           await this.getWeather(json);
@@ -262,7 +263,7 @@ export default {
         document.body.style.background = 'rgb(4, 12, 54)';
       else document.body.style.background = 'rgb(78, 99, 206)';
     },
-    
+
     // timeNow() {
     //   var d = new Date();
     //   let hours = d.getHours();
