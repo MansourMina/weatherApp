@@ -201,7 +201,6 @@ export default {
           this.message = 'City not found';
         } else {
           const json = await response.json();
-
           await this.getWeather(json);
           this.waiting = false;
         }
@@ -215,7 +214,6 @@ export default {
         if (!response.ok) {
           this.clickMethod = false;
           this.message = 'City not found';
-          this.waiting = false;
         } else {
           const json = await response.json();
           await this.getWeather(json);
