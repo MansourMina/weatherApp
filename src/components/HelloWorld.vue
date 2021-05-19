@@ -192,31 +192,34 @@ export default {
     async apiCall(status) {
       if (status == 'current') {
         const api = `https://api.openweathermap.org/data/2.5/weather?lat=${this.lat}&lon=${this.long}&appid=${this.openweatherKey}`;
+        this.waiting = true;
+
         const response = await fetch(api);
+        this.waiting = false;
+
         if (!response.ok) {
           this.clickMethod = false;
           this.message = 'City not found';
         } else {
           const json = await response.json();
 
-          this.waiting = true;
           await this.getWeather(json);
-          this.waiting = false;
         }
       }
       if (status == 'notCurrent') {
         const api = `https://api.openweathermap.org/data/2.5/weather?q=${this.searchCountry}&appid=${this.openweatherKey}`;
+        this.waiting = true;
 
         const response = await fetch(api);
+        this.waiting = false;
+
         if (!response.ok) {
           this.clickMethod = false;
           this.message = 'City not found';
           this.waiting = false;
         } else {
           const json = await response.json();
-          this.waiting = true;
           await this.getWeather(json);
-          this.waiting = false;
         }
       }
     },
