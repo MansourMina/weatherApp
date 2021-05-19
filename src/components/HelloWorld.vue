@@ -65,8 +65,14 @@
         </div>
       </div>
       <div class="row card0" v-else>
-        <div class="card1 col-md-8 centri" v-if="message">
+        <div class="card1 col-md-8 centri" v-if="waiting">
           <div class="spinner-border" style="color:red" role="status"></div>
+        </div>
+        <div class="card1 col-lg-8 col-md-7" v-else>
+          <div class="d-flex flex-column text-center centri">
+            <h3 class="fa fa-sun-o mt-4"></h3>
+            <p class="display-5 ">{{ message }}</p>
+          </div>
         </div>
 
         <div class="card2 col-lg-4 col-md-5">
@@ -140,10 +146,11 @@ export default {
       searchCountry: '',
       lat: null,
       long: null,
-      message: false,
+      waiting: false,
       description: null,
       timeofCity: null,
       clickMethod: false,
+      message: '',
       arrayOfWeekdays: [
         'Sunday',
         'Monday',
@@ -194,7 +201,8 @@ export default {
 
           //statt await this.getWeather(json)
           const call = this.getWeather(json);
-          call.then((this.message = true));
+
+          call.then((this.waiting = true));
         }
       }
       if (status == 'notCurrent') {
@@ -204,12 +212,13 @@ export default {
         if (!response.ok) {
           this.clickMethod = false;
           this.message = 'City not found';
+          this.waiting = false;
         } else {
           const json = await response.json();
 
           //statt await this.getWeather(json)
           const call = this.getWeather(json);
-          call.then((this.message = true));
+          call.then((this.waiting = true));
         }
       }
     },
