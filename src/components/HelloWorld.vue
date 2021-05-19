@@ -146,7 +146,7 @@ export default {
       searchCountry: '',
       lat: null,
       long: null,
-      waiting: false,
+      waiting: true,
       description: null,
       timeofCity: null,
       clickMethod: false,
@@ -199,10 +199,9 @@ export default {
         } else {
           const json = await response.json();
 
-          //statt await this.getWeather(json)
-          const call = this.getWeather(json);
-
-          call.then((this.waiting = true));
+          this.waiting = true;
+          await this.getWeather(json);
+          this.waiting = false;
         }
       }
       if (status == 'notCurrent') {
@@ -215,10 +214,9 @@ export default {
           this.waiting = false;
         } else {
           const json = await response.json();
-
-          //statt await this.getWeather(json)
-          const call = this.getWeather(json);
-          call.then((this.waiting = true));
+          this.waiting = true;
+          await this.getWeather(json);
+          this.waiting = false;
         }
       }
     },
