@@ -65,12 +65,10 @@
         </div>
       </div>
       <div class="row card0" v-else>
-        <div class="card1 col-lg-8 col-md-7">
-          <div class="d-flex flex-column text-center">
-            <h3 class="fa fa-sun-o mt-4"></h3>
-            <p class="display-5">{{ message }}</p>
-          </div>
+        <div class="card1 col-md-8 centri" v-if="message">
+          <div class="spinner-border" style="color:red" role="status"></div>
         </div>
+
         <div class="card2 col-lg-4 col-md-5">
           <div class="row px-3">
             <input
@@ -142,7 +140,7 @@ export default {
       searchCountry: '',
       lat: null,
       long: null,
-      message: '',
+      message: false,
       description: null,
       timeofCity: null,
       clickMethod: false,
@@ -177,6 +175,7 @@ export default {
       navigator.geolocation.getCurrentPosition((position) => {
         this.long = position.coords.longitude;
         this.lat = position.coords.latitude;
+
         this.apiCall('current');
       });
     }
@@ -192,7 +191,10 @@ export default {
           this.message = 'City not found';
         } else {
           const json = await response.json();
-          await this.getWeather(json);
+
+          //statt await this.getWeather(json)
+          const call = this.getWeather(json);
+          call.then((this.message = true));
         }
       }
       if (status == 'notCurrent') {
@@ -204,7 +206,10 @@ export default {
           this.message = 'City not found';
         } else {
           const json = await response.json();
-          await this.getWeather(json);
+
+          //statt await this.getWeather(json)
+          const call = this.getWeather(json);
+          call.then((this.message = true));
         }
       }
     },
@@ -310,6 +315,11 @@ export default {
 </script>
 
 <style>
+.centri {
+  margin: auto;
+  width: 50%;
+  text-align: center;
+}
 body {
   color: #fff;
   overflow-x: hidden;
