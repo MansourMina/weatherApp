@@ -195,7 +195,6 @@ export default {
         this.waiting = true;
 
         const response = await fetch(api);
-        this.waiting = false;
 
         if (!response.ok) {
           this.clickMethod = false;
@@ -204,6 +203,7 @@ export default {
           const json = await response.json();
 
           await this.getWeather(json);
+          this.waiting = false;
         }
       }
       if (status == 'notCurrent') {
@@ -211,7 +211,6 @@ export default {
         this.waiting = true;
 
         const response = await fetch(api);
-        this.waiting = false;
 
         if (!response.ok) {
           this.clickMethod = false;
@@ -220,6 +219,7 @@ export default {
         } else {
           const json = await response.json();
           await this.getWeather(json);
+          this.waiting = false;
         }
       }
     },
